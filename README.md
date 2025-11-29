@@ -23,7 +23,7 @@
 
 1.  **Clone the repository**
     ```bash
-    git clone [https://github.com/yourusername/when-is-the-next.git](https://github.com/yourusername/when-is-the-next.git)
+    git clone https://github.com/ShubhmDalvi/whenisthenext.git
     cd when-is-the-next
     ```
 
