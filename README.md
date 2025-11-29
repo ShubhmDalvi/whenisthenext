@@ -1,16 +1,47 @@
-# React + Vite
+# WHEN_IS_THE_NEXT?
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A sci-fi terminal interface for tracking the universe's schedule.
 
-Currently, two official plugins are available:
+**When Is The Next?** is a React-based web application that visualizes time until significant astronomical, chronological, and deep-time events. It features a "BIOS" boot sequence, CRT monitor aesthetics, and real-time geolocation data to answer the ultimate question: *How long do we have?*
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🖥️ Features
 
-## React Compiler
+* **BIOS Boot Sequence:** Authentic 1.7s startup with CRT scanlines, flicker, and phosphor glow effects.
+* **Dynamic Geolocation:** Uses IP triangulation to calculate precise local sunsets, blue hours, and solar noons.
+* **Event Matrix:** Tracks everything from the next "Friday the 13th" to "Voyager 1's Arrival at Gliese 445".
+* **Sci-Fi UI:** "Chronos OS" aesthetic with orbital geometry, glitch effects, and liquid text.
+* **Mobile Optimized:** Responsive layout with specific adjustments for handheld viewports.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+* **Core:** React (Vite)
+* **Animation:** Framer Motion
+* **Calculations:** SunCalc, date-fns
+* **Styling:** SCSS, CSS Variables
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Installation
+
+1.  **Clone the repository**
+    ```bash
+    git clone [https://github.com/yourusername/when-is-the-next.git](https://github.com/yourusername/when-is-the-next.git)
+    cd when-is-the-next
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Initialize the system**
+    ```bash
+    npm run dev
+    ```
+
+## 📂 Project Structure
+
+```text
+/src
+  ├── App.jsx        # Main Logic & Event Data
+  ├── App.css        # Global Styles, CRT Effects, & Responsive Rules
+  ├── assets         # Fonts & Static Media
+  └── main.jsx       # Entry Point
