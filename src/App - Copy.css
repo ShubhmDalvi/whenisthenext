@@ -1,0 +1,479 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;800&family=Inter:wght@400;600&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;800&family=Inter:wght@400;600&family=Oxanium:wght@200;300;400;500;600;700&display=swap');
+
+:root {
+  --bg-void: #050505;
+  --bg-panel: #0a0a0a;
+  --border-dim: #222;
+  --border-bright: #444;
+  --text-main: #EAEAEA;
+  --text-muted: #555;
+  --accent-primary: #FF3B30; 
+  --font-tech: 'JetBrains Mono', monospace;
+  --font-label: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background-color: var(--bg-void);
+  color: var(--text-main);
+  font-family: var(--font-tech);
+  overflow: hidden;
+  font-size: 13px;
+}
+
+/* GRID BG */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    linear-gradient(var(--border-dim) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-dim) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.2;
+  pointer-events: none;
+  mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
+}
+
+.interface-shell {
+  position: relative;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 50px 1fr 30px; /* Header / Main / Footer */
+}
+
+/* HEADER */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-dim);
+  padding: 0 20px;
+  
+  .brand {
+    font-weight: 800;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    letter-spacing: 1px;
+    
+    .status-light {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-primary);
+      box-shadow: 0 0 8px var(--accent-primary);
+      transition: background 0.5s;
+    }
+  }
+  .sys-info { color: var(--text-muted); font-size: 10px; }
+}
+
+/* MAIN STAGE */
+.main-stage {
+  display: grid;
+  grid-template-columns: 250px 1fr; /* Fixed Sidebar / Content */
+  overflow: hidden;
+}
+
+/* --- SIDEBAR NAVIGATION (Optimized) --- */
+.nav-rail {
+  border-right: 1px solid var(--border-dim);
+  padding: 20px 0;
+  overflow-y: auto;
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  z-index: 20; /* Ensure it sits comfortably above the Warp Grid */
+  position: relative; /* Establish stacking context */
+  
+  &::-webkit-scrollbar { display: none; }
+
+  .nav-group {
+    margin-bottom: 30px;
+  }
+
+  .group-header {
+    padding: 0 20px;
+    font-size: 10px;
+    color: var(--border-bright);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    opacity: 0.7;
+  }
+
+  .nav-item {
+    padding: 8px 20px;
+    cursor: pointer;
+    color: var(--text-muted);
+    
+    /* FIX 1: Only animate colors, NOT layout/position */
+    transition: color 0.2s ease, background 0.2s ease, border-left 0.2s ease;
+    
+    display: flex;
+    gap: 12px; /* Increased gap slightly for clarity */
+    align-items: center;
+    font-size: 12px;
+    border-left: 2px solid transparent;
+    
+    /* FIX 2: Hardware acceleration to prevent jitter */
+    transform: translateZ(0); 
+    will-change: background, color;
+
+    /* THE CODE SPAN [A-01] */
+    .code { 
+      font-size: 10px; 
+      opacity: 0.5; 
+      font-family: var(--font-tech);
+      
+      /* FIX 3: Stop the code from squishing or moving */
+      flex-shrink: 0; 
+      min-width: 35px; /* Fixed width ensures text doesn't slide left/right */
+      display: inline-block;
+    }
+
+    &:hover {
+      color: var(--text-main);
+      background: rgba(255,255,255,0.03);
+    }
+    
+    &.active {
+      color: var(--text-main);
+      border-left: 2px solid var(--accent-primary);
+      background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent);
+      text-shadow: 0 0 5px rgba(255,255,255,0.2);
+      
+      .code {
+        color: var(--accent-primary);
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* EVENT VIEWPORT */
+.event-viewport {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* DECOR CORNERS */
+  .decor-cross {
+    position: absolute;
+    width: 20px; height: 20px;
+    border: 1px solid transparent;
+    
+    &.tl { top: 20px; left: 20px; border-top-color: var(--border-bright); border-left-color: var(--border-bright); }
+    &.tr { top: 20px; right: 20px; border-top-color: var(--border-bright); border-right-color: var(--border-bright); }
+    &.bl { bottom: 20px; left: 20px; border-bottom-color: var(--border-bright); border-left-color: var(--border-bright); }
+    &.br { bottom: 20px; right: 20px; border-bottom-color: var(--border-bright); border-right-color: var(--border-bright); }
+  }
+}
+
+.event-card {
+  width: 100%;
+  max-width: 900px;
+  text-align: center;
+}
+
+.glitch-title {
+  font-family: 'Oxanium', sans-serif;
+  
+  /* CHANGED: 400 is Regular, 500 is Medium. 
+     700 was the "too bold" one. */
+  font-weight: 500; 
+  
+  /* Slight letter spacing adjustment for lighter fonts looks very premium */
+  letter-spacing: -0.02em; 
+
+  /* Keep existing layout */
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  margin: 10px 0 40px 0;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(0,0,0,0.5);
+  transition: color 0.5s ease;
+}
+
+.sub-meta {
+  color: var(--accent-primary);
+  font-size: 12px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  transition: color 0.5s;
+}
+
+/* COUNTDOWN MATRIX */
+.count-matrix {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  
+  .col {
+    display: flex; flex-direction: column; align-items: center;
+    .val { 
+      font-size: clamp(2.5rem, 5vw, 4.5rem); 
+      font-weight: 300; 
+      line-height: 1; 
+      &.accent { color: var(--accent-primary); transition: color 0.5s; }
+    }
+    .label { 
+      font-size: 10px; color: var(--text-muted); margin-top: 8px; letter-spacing: 1px;
+    }
+  }
+  .sep {
+    font-size: 3rem;
+    color: var(--border-dim);
+    line-height: 1;
+    
+    /* FIX: This pushes the colon down to align with the numbers */
+    position: relative;
+    top: 10px; 
+    
+    opacity: 0.5; /* Makes it slightly dimmer for style */
+    animation: pulse 2s infinite;
+  }
+}
+
+.data-readout {
+  border-top: 1px solid var(--border-dim);
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  width: 80%;
+  margin: 0 auto;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+@keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+/* FOOTER */
+.status-bar {
+  border-top: 1px solid var(--border-dim);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+
+
+/* --- ABSTRACT GEOMETRY (NEW) --- */
+.orbital-system {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140%; /* Large enough to encompass the text */
+  padding-bottom: 140%; /* Aspect ratio hack for square */
+  z-index: -1; /* Sit behind the text */
+  pointer-events: none;
+  opacity: 0.6;
+  
+  svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    
+    circle {
+      transform-origin: center;
+      transition: stroke 0.5s ease;
+    }
+  }
+}
+
+/* Make sure the Event Card allows absolute positioning */
+.event-card {
+  /* Existing styles... */
+  position: relative; 
+  /* Add this to ensure z-index works */
+  z-index: 1; 
+}
+
+
+
+
+
+
+
+
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 768px) {
+  
+  /* 1. Global Layout */
+  .interface-shell {
+    grid-template-rows: 50px 1fr 30px; /* Header / Content / Footer */
+    height: 100vh; 
+    overflow: hidden; 
+  }
+
+  /* 2. Main Stage: Swap rows so Viewport is Top, Nav is Bottom */
+  .main-stage {
+    grid-template-columns: 1fr; 
+    grid-template-rows: 1fr 60px; /* Row 1: Content (Big), Row 2: Nav (Small) */
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 3. Navigation Rail (Now at the Bottom) */
+  .nav-rail {
+    grid-row: 2; /* Moves to bottom slot */
+    border-right: none;
+    border-top: 1px solid var(--border-dim); /* Separator line on top */
+    border-bottom: none;
+    
+    display: flex;
+    flex-direction: row; 
+    overflow-x: auto; 
+    overflow-y: hidden;
+    white-space: nowrap;
+    padding: 0 10px;
+    height: 100%; /* Fill the 60px row */
+    align-items: center;
+    gap: 12px;
+    background: rgba(0,0,0,0.3); /* Slight darkness behind nav */
+    backdrop-filter: blur(5px);
+
+    &::-webkit-scrollbar { display: none; }
+    scrollbar-width: none;
+
+    .nav-group {
+      margin-bottom: 0;
+      display: flex;
+      gap: 10px;
+    }
+
+    .group-header { display: none; }
+
+    .nav-item {
+      padding: 8px 16px; /* Larger touch targets */
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-dim);
+      border-radius: 4px;
+      
+      &.active {
+        background: var(--accent-primary);
+        color: #000;
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 10px var(--accent-primary); /* Glow active item */
+        /* --- ADD THIS BLOCK BELOW --- */
+        .code {
+          color: #000000; /* Force the [A-01] to be black */
+          opacity: 1;     /* Remove transparency */
+        }
+      }
+    }
+  }
+
+  /* 4. Event Viewport (Takes up top space) */
+  .event-viewport {
+    grid-row: 1; /* Moves to top slot */
+    padding: 20px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .glitch-title {
+    font-size: clamp(2rem, 8vw, 3rem);
+    margin-bottom: 20px;
+  }
+
+  /* 5. Countdown Scaling */
+  .count-matrix {
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    
+    .col .val { font-size: clamp(2.5rem, 12vw, 4rem); }
+    .col .label { font-size: 9px; }
+    .sep { font-size: 2rem; top: 5px; }
+  }
+
+  /* 6. Orbital Ring Scaling */
+  .orbital-system {
+    width: 95vw;
+    padding-bottom: 95vw;
+    opacity: 0.4; /* Slightly dimmer on mobile to read text better */
+  }
+
+  /* 7. Footer */
+  .status-bar {
+    font-size: 9px;
+    padding: 0 10px;
+    z-index: 20;
+    background: var(--bg-void); /* Ensure text doesn't overlap */
+  }
+  
+  .data-readout { width: 100%; font-size: 9px; }
+  .decor-cross { display: none; }
+}
+
+
+
+
+/* --- LIQUID TEXT SHINE EFFECT --- */
+@keyframes shine-flow {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+.liquid-title {
+  /* Set defaults */
+  background-size: 200% auto;
+  color: #fff; /* Fallback */
+  
+  /* The Magic: Clip background to text */
+  background-clip: text;
+  -webkit-background-clip: text;
+  
+  /* Make text transparent so background shows */
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+  
+  /* Animate */
+  animation: shine-flow 8s linear infinite;
+  
+  /* Keep the glow/shadow to ensure legibility */
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.15));
+  
+  /* Prevent layout shift */
+  display: inline-block; 
+  width: 100%;
+}
+
+
+
+
+
+
+/* Add this anywhere in App.css */
+
+.solar-wind-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Let clicks pass through to UI */
+  z-index: 1; /* Above grid-overlay (0), below UI */
+  opacity: 0.6; /* Global subtlety control */
+  mix-blend-mode: screen; /* Makes particles glow slightly against dark bg */
+}
+
+
+
+
+
+
