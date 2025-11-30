@@ -44,6 +44,15 @@ body {
   mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
 }
 
+/* VIGNETTE */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
+}
+
 .interface-shell {
   position: relative;
   z-index: 10;
@@ -268,6 +277,8 @@ body {
       font-size: clamp(2.5rem, 5vw, 4.5rem);
       font-weight: 300;
       line-height: 1;
+      font-variant-numeric: tabular-nums;
+      /* FIX: Prevents jitter */
 
       &.accent {
         color: var(--accent-primary);
@@ -295,6 +306,72 @@ body {
     opacity: 0.5;
     /* Makes it slightly dimmer for style */
     animation: pulse 2s infinite;
+  }
+}
+
+/* ASTRAL CONTEXT VISUALIZATION */
+.astral-ctx {
+  margin: 0 auto 30px auto;
+  width: 300px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .ctx-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .ctx-label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 9px;
+    margin-top: 5px;
+    opacity: 0.8;
+    letter-spacing: 1px;
+    font-family: var(--font-tech);
+  }
+
+  /* Linear Track Styles */
+  .ctx-linear-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid;
+    position: relative;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+
+  .ctx-linear-fill {
+    height: 100%;
+    position: relative;
+
+    /* Scanline effect on the bar */
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      animation: shine-flow 2s infinite;
+    }
+  }
+
+  .ctx-tick {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    opacity: 0.5;
   }
 }
 
